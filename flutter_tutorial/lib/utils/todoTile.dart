@@ -23,6 +23,7 @@ class TodoTile extends StatelessWidget {
           motion: StretchMotion(),
           children: [
             SlidableAction(
+              borderRadius: BorderRadius.circular(12),
               onPressed: deleteFunction,
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
