@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tutorial/data/database.dart';
 import 'package:flutter_tutorial/utils/dialog_box.dart';
 import 'package:flutter_tutorial/utils/todoTile.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,19 +12,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List todoList = [
-    ["Make a todo app 1", false],
-    ["Make a todo app 2", true],
-    ["Make a todo app 3", false],
-    ["Make a todo app 4", true],
-    ["Make a todo app 5", false],
-    ["Make a todo app 6", true],
-  ];
+  final box = Hive.box('taskBox');
+  TodoDatabase db = TodoDatabase();
+  List todoList = [];
+
+  @override
+  void initState() {
+    if (box.get("TODOLIST") == null) {
+      db.initialDefaultData();
+      db.updateData();
+    } else {
+      db.loadData();
+    }
+    todoList = db.todoList;
+    super.initState();
+  }
 
   void checkBoxChanged(bool? value, int? index) {
     setState(() {
       todoList[index!][1] = !todoList[index][1];
     });
+    db.updateData();
   }
 
   TextEditingController textController = TextEditingController();
@@ -33,6 +43,7 @@ class _HomePageState extends State<HomePage> {
       textController.clear();
       Navigator.of(context).pop();
     });
+    db.updateData();
   }
 
   void onCancel() {
@@ -57,6 +68,7 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           todoList.removeAt(index);
         });
+        db.updateData();
       } else {
         showDialog(
           context: context,
