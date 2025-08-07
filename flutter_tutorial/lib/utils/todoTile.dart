@@ -16,38 +16,40 @@ class TodoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: StretchMotion(),
-        children: [
-          SlidableAction(
-            onPressed: deleteFunction,
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Delete',
-          ),
-        ],
-      ),
-      child: Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.yellow,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Slidable(
+        endActionPane: ActionPane(
+          motion: StretchMotion(),
           children: [
-            Checkbox(value: taskCompleted, onChanged: onChanged),
-            Text(
-              taskName,
-              style: TextStyle(
-                decoration: taskCompleted
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-              ),
+            SlidableAction(
+              onPressed: deleteFunction,
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'Delete',
             ),
           ],
+        ),
+        child: Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.yellow,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Checkbox(value: taskCompleted, onChanged: onChanged),
+              Text(
+                taskName,
+                style: TextStyle(
+                  decoration: taskCompleted
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
